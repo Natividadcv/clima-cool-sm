@@ -7,11 +7,11 @@ if (isset($_GET["ruta"])) {
   if (
     $_GET["ruta"] == "inicio" ||
     $_GET["ruta"] == "usuarios" ||
-    $_GET["ruta"] == "categorias" ||
-    $_GET["ruta"] == "productos" ||
+    $_GET["ruta"] == "inventario" ||
     $_GET["ruta"] == "clientes" ||
-    $_GET["ruta"] == "ventas" ||
-    $_GET["ruta"] == "crear-venta" ||
+    $_GET["ruta"] == "venta-aire" ||
+    $_GET["ruta"] == "instalacion" ||
+    $_GET["ruta"] == "mantenimiento" ||
     $_GET["ruta"] == "reportes" ||
     $_GET["ruta"] == "salir"
   ) {

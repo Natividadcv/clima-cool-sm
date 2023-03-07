@@ -156,7 +156,7 @@
 
 
         <li class="nav-item">
-          <a href="reporte" class="nav-link">
+          <a href="reportes" class="nav-link">
             <i class="nav-icon fas fa-chart-pie"></i>
             <p>
               Reporte
