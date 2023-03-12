@@ -56,12 +56,22 @@
     <span class="brand-text font-weight-light">AdminLTE 3</span>
   </a>
 
+
   <!-- Sidebar -->
   <div class="sidebar">
     <!-- Sidebar user (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="image">
+        <?php
+        if ($_SESSION['foto'] != '') {
+          echo '<img src="' . $_SESSION['foto'] . '" class="img-circle elevation-2" alt="User Image">';
+        } else {
+          echo '<img src="vistas/img/usuarios/default/anonymous.png" class="img-circle elevation-2" alt="User Image">';
+        }
+        ?>
+      </div>
       <div class="info">
-        <a href="#" class="d-block">Alexander Pierce</a>
+        <a href="#" class="d-block"> <?php echo $_SESSION['nombre']; ?></a>
       </div>
     </div>
 

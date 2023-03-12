@@ -3,7 +3,7 @@
 class Conexion
 {
   public $dbh;
-  public function conectar()
+  static public function conectar()
   {
     try {
 

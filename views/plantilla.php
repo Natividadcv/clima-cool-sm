@@ -19,7 +19,19 @@ session_start();
   <!-- Theme style -->
   <link rel="stylesheet" href="views/dist/css/adminlte.min.css">
 
+  <!-- DataTables -->
+  <link rel="stylesheet" href="views/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="views/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="views/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+
+  <!-- SweetAlert2 -->
+  <script src="views/plugins/sweetalert2/sweetalert2.all.js"></script>
+
+
   <link rel="icon" href="views/img/plantilla/logo.png">
+
+
 </head>
 
 <!-- ========================================
