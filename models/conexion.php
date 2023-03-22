@@ -1,5 +1,7 @@
 <?php
 
+// *  Se conecta a la base de datos y devuelve la conexión. */
+
 class Conexion
 {
   public $dbh;

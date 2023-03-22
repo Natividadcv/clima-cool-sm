@@ -69,7 +69,7 @@
                   <td>' . $value["ultimo_login"] . '</td>
                   <td>
                     <div class="btn-group">
-                      <button class="btn btn-warning"><i class="fas fa-pencil-alt"></i></button>
+                      <button class="btn btn-warning btnEditarUsuario" idUsuario="' . $value["id"] . '" data-toggle="modal" data-target="#modalEditarUsuario"><i class="fas fa-pencil-alt"></i></button>
                       <button class="btn btn-danger"><i class="fas fa-times"></i></button>
                     </div>
                   </td>
@@ -197,6 +197,125 @@
 
 
   </form>
+  </div>
+  </div>
+  </div>
+
+
+
+
+
+  <!--  MODAL EDITAR USUARIO   -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <form role="form" method="post" action="" enctype="multipart/form-data">
+
+          <div class="modal-header" style="background:#3c8dbc; color:white;">
+            <h5 class="modal-title" id="exampleModalLabel">Editar Usuarios</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--  ENTRADA PARA EL NOMBRE   -->
+
+          <div class="modal-body">
+            <div class="box-body">
+
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-user"></i></span>
+                  <input class="form-control form-control" type="text" name="txtEditarNombre" id="txtEditarNombre" required>
+                </div>
+              </div>
+
+
+              <!--  ENTRADA PARA EL USUARIO   -->
+
+
+
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                  <input class="form-control form-control" type="text" name="txtEditarUsuario" id="txtEditarUsuario" value="<?php ?>" readonly>
+                </div>
+              </div>
+
+
+              <!--  ENTRADA PARA CONTRASEÑA   -->
+
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-key"></i></span>
+                  <input class="form-control form-control" type="password" name="txtEditarPass" placeholder="Escriba nueva contraseña" required>
+
+                  <input type="hidden" id="passwordActual" name="passwordActual">
+
+
+
+
+                </div>
+              </div>
+
+
+
+              <!--  ENTRADA PARA SELECCIONAR SU PERFIL   -->
+
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="fa fa-users"></i></span>
+                  <select class="form-control input-lg" name="txtEditarPerfil">
+
+                    <option value="" id="editarPerfil"></option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Especial">Especial</option>
+                    <option value="Vendedor">Vendedor</option>
+
+                  </select>
+                </div>
+              </div>
+
+              <!--  ENTRADA PARA SUBIR FOTO   -->
+
+
+
+              <div class="form-group">
+                <div class="panel">SUBIR FOTO</div>
+                <input type="file" class="nuevaFoto" name="editarFoto" id="editarFoto">
+                <p class="help-block">Peso máximo de la foto 2MB</p>
+
+                <img src="views/img/usuarios/default/anonymous.png" class="img-thumbnail previsualizar" width="100px">
+
+                <input type="hidden" name="fotoActual" id="fotoActual">
+
+
+
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Editar usuario</button>
+          </div>
+          <?php
+
+          $editarUsuario = new ControladorUsuarios();
+          $editarUsuario->ctrEditarUsuario();
+
+          ?>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
 
 
 

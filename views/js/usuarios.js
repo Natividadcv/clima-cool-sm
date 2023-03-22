@@ -37,3 +37,42 @@ $(".nuevaFoto").change(function () {
     });
   }
 });
+
+/*====================================================
+  AGREGAR USUARIO
+  ======================================================*/
+
+/*====================================================
+  EDITAR USUARIO
+  ======================================================*/
+
+$(".btnEditarUsuario").click(function () {
+  let idUsuario = $(this).attr("idUsuario");
+
+  let datos = new FormData();
+  datos.append("idUsuario", idUsuario);
+
+  $.ajax({
+    url: "ajax/usuarios.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    success: function (respuesta) {
+      console.log({ respuesta });
+
+      $("#txtEditarNombre").val(respuesta["nombre"]);
+      $("#txtEditarUsuario").val(respuesta["usuario"]);
+      $("#editarPerfil").html(respuesta["perfil"]);
+      $("#editarPerfil").val(respuesta["perfil"]);
+      $("#fotoActual").val(respuesta["foto"]);
+      $("#passwordActual").val(respuesta["password"]);
+
+      if (respuesta["foto"] != "") {
+        $(".previsualizar").attr("src", respuesta["foto"]);
+      }
+    },
+  });
+});

@@ -117,7 +117,7 @@ class ControladorUsuarios
               GUARDAMOS LA IMAGEN EN EL DIRECTORIO
               =============================================*/
 
-            $aleatorio = mt_rand(100, 999);
+            $aleatorio = mt_rand(100, 999); // * Genera un número aleatorio entre 100 y 999
 
             $ruta = "views/img/usuarios/" . $_POST["txtNuevoUsuario"] . "/" . $aleatorio . ".png";
 
@@ -134,7 +134,7 @@ class ControladorUsuarios
 
         $tabla = "usuarios";
 
-        $encriptar = crypt($_POST["txtNuevoPass"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+        $encriptar = crypt($_POST["txtNuevoPass"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$'); // * Encriptar la contraseña
 
         $datos = array(
           "nombre" => $_POST["txtNuevoNombre"],
@@ -142,11 +142,12 @@ class ControladorUsuarios
           "password" => $encriptar,
           "perfil" => $_POST["txtNuevoPerfil"],
           "foto" => $ruta
-        );
+        ); // * Se crea un array con los datos que se van a insertar en la base de datos
 
-        $respuesta = ModeloUsuarios::mdlIngresarUsuario($tabla, $datos);
+        $respuesta = ModeloUsuarios::mdlIngresarUsuario($tabla, $datos); // * Se llama al modelo para que haga la consulta a la base de datos
 
-        if ($respuesta == "ok") {
+        if ($respuesta == "ok") { // * Si la respuesta es ok se muestra un mensaje de éxito
+
 
           echo '<script>
         
@@ -163,7 +164,7 @@ class ControladorUsuarios
 
           </script>';
         }
-      } else {
+      } else { // * Si la respuesta no es ok se muestra un mensaje de error
         echo '<script>
         
          const swal = new SweetAlert({
@@ -185,14 +186,176 @@ class ControladorUsuarios
   /*=============================================
       MOSTRAR USUARIOS
       =============================================*/
-
+  // * Se crea un método estático para mostrar los usuarios
   static public function ctrMostrarUsuarios($item, $valor)
   {
 
-    $tabla = "usuarios";
+    $tabla = "usuarios"; // * Se crea una variable con el nombre de la tabla
 
-    $respuesta = ModeloUsuarios::MdlMostrarUsuarios($tabla, $item, $valor);
+    $respuesta = ModeloUsuarios::MdlMostrarUsuarios($tabla, $item, $valor); // * Se llama al modelo para que haga la consulta a la base de datos
 
-    return $respuesta;
+    return $respuesta; // * Se retorna la respuesta
+  }
+
+
+  /*=============================================
+      EDITAR USUARIOS ctrEditarUsuario
+      =============================================*/
+  // * Se crea un método estático para editar los usuarios
+  static public function ctrEditarUsuario()
+  {
+
+    if (isset($_POST["txtEditarNombre"])) { // * Si se envía el formulario de editar usuario
+
+      if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["txtEditarNombre"])) { // * Validar que el nombre solo contenga letras y números
+
+        /*=============================================
+            VALIDAR IMAGEN
+            =============================================*/
+
+        $ruta = $_POST["fotoActual"]; // * Se crea una variable con la ruta de la foto actual
+
+        if (isset($_FILES["editarFoto"]["tmp_name"]) && !empty($_FILES["editarFoto"]["tmp_name"])) { // * Si se envía una nueva foto
+
+          list($ancho, $alto) = getimagesize($_FILES["editarFoto"]["tmp_name"]); // * obtenemos el ancho y alto de la imagen
+
+          $nuevoAncho = 500; // * Se crea una variable con el nuevo ancho de la imagen
+          $nuevoAlto = 500; // * Se crea una variable con el nuevo alto de la imagen
+
+          /*=============================================
+              CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
+              =============================================*/
+
+          $directorio = "views/img/usuarios/" . $_POST["txtEditarUsuario"]; // * Se crea una variable con el directorio donde se va a guardar la foto
+
+          /*=============================================
+              PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
+              =============================================*/
+
+          if (!empty($_POST["fotoActual"])) { // * Si la foto actual no está vacía
+
+            unlink($_POST["fotoActual"]); // * borramos la imagen anterior
+          } else { // * Si la foto actual está vacía
+
+            mkdir($directorio, 0755); // * si no existe la carpeta la creamos
+          }
+
+          /*=============================================
+              DE ACUERDO AL TIPO DE IMAGEN APLICAMOS LAS FUNCIONES POR DEFECTO DE PHP
+              =============================================*/
+
+          if ($_FILES["editarFoto"]["type"] == "image/jpeg") { // * Si la imagen es jpg
+
+            /*=============================================
+                GUARDAMOS LA IMAGEN EN EL DIRECTORIO
+                =============================================*/
+
+            $aleatorio = mt_rand(100, 999); // * Genera un número aleatorio entre 100 y 999
+
+            $ruta = "views/img/usuarios/" . $_POST["txtEditarUsuario"] . "/" . $aleatorio . ".jpg"; // * Se crea una variable con la ruta de la imagen
+
+            $origen = imagecreatefromjpeg($_FILES["editarFoto"]["tmp_name"]); // * Se crea una variable con la imagen original
+
+            $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto); // * Se crea una variable con la imagen destino
+
+            imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto); // * Se copia la imagen original en la imagen destino
+
+            imagejpeg($destino, $ruta); // * Se guarda la imagen destino en la ruta
+          }
+
+          if ($_FILES["editarFoto"]["type"] == "image/png") { // * Si la imagen es png
+
+            /*=============================================
+                GUARDAMOS LA IMAGEN EN EL DIRECTORIO
+                =============================================*/
+
+            $aleatorio = mt_rand(100, 999);
+
+            $ruta = "views/img/usuarios/" . $_POST["txtEditarUsuario"] . "/" . $aleatorio . ".png";
+
+            $origen = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);
+
+            $destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+
+            imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+
+            imagepng($destino, $ruta);
+          }
+        }
+
+        $tabla = "usuarios";
+
+        if ($_POST["txtEditarPass"] != "") { // * si la contraseña no esta vacia
+
+          if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["txtEditarPass"])) { // * si la contraseña no tiene caracteres especiales
+
+            $encriptar = crypt($_POST["txtEditarPass"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+          } else { // * si la contraseña tiene caracteres especiales
+
+            echo '<script>
+        
+            const swal = new SweetAlert({
+              type: "error",
+              title: "¡La contraseña no puede ir vacía o llevar caracteres especiales!",
+              showConfirmButton: true,
+              confirmButtonText: "Cerrar"
+              }).then(function(result){
+                if (result.value) {
+                  window.location = "usuarios";
+                }
+              });
+  
+            </script>';
+          }
+        } else { // * si la contraseña esta vacia
+
+          $encriptar = $_POST["passwordActual"]; // * la contraseña actual
+        }
+
+        $datos = array(
+          "nombre" => $_POST["txtEditarNombre"],
+          "usuario" => $_POST["txtEditarUsuario"],
+          "password" => $encriptar,
+          "perfil" => $_POST["txtEditarPerfil"],
+          "foto" => $ruta
+        );
+
+        $respuesta = ModeloUsuarios::mdlEditarUsuario($tabla, $datos);
+
+        if ($respuesta == "ok") { // * Si la respuesta es ok
+
+          echo '<script>
+        
+          const swal = new SweetAlert({
+            type: "success",
+            title: "¡El usuario ha sido editado correctamente!",
+            showConfirmButton: true,
+            confirmButtonText: "Cerrar"
+            }).then(function(result){
+              if (result.value) {
+                window.location = "usuarios";
+              }
+            });
+
+          </script>';
+        }
+      } else { // * Si el nombre no es válido
+
+        echo '<script>
+          
+          const swal = new SweetAlert({
+            type: "error",
+            title: "¡El nombre no puede ir vacío o llevar caracteres especiales!",
+            showConfirmButton: true,
+            confirmButtonText: "Cerrar"
+            }).then(function(result){
+              if (result.value) {
+                window.location = "usuarios";
+              }
+            });
+  
+          </script>';
+      }
+    }
   }
 }

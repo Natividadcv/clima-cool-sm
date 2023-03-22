@@ -27,7 +27,7 @@
           </div>
           <div class="social-auth-links text-center mb-3">
             <a href="#" class="btn btn-block btn-primary">
-              <button type="submit" class="btn btn-block btn-primary">Iniciar Sessión</button>
+              <button type="submit" class="btn btn-block btn-primary">Iniciar Sesión</button>
             </a>
           </div>
 
